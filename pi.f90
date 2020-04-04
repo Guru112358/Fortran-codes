@@ -24,7 +24,7 @@ end if
 end do
 write(2,*)'set xlabel "X"'
 write(2,*)'set ylabel "Y"'
-write(2,*)'plot "pi12.dat" with line'
+write(2,*)'plot "pi12.dat"'
 CALL SYSTEM('gnuplot -p montepi.plt') !calling gnuplot using the call system command
 
 close(1)
