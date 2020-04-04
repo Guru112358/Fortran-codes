@@ -20,11 +20,11 @@ c=c+1 !incrementing each time the random point falls within the circle
 pi=4.0*real(c)/(i)
 print *,i,x,y,r,pi
 write(1,*)x,y
+end if
+end do
 write(2,*)'set xlabel "X"'
 write(2,*)'set ylabel "Y"'
 write(2,*)'plot "pi12.dat" with line'
-end if
-end do
 CALL SYSTEM('gnuplot -p montepi.plt') !calling gnuplot using the call system command
 
 close(1)
