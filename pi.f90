@@ -9,7 +9,8 @@ real::x,y,r,pi
 integer::n,i,c
 c=0 !counter
 n=10000!number of random points
-open(1,file="pi12.dat",status="old")
+open(1,file="pi12.dat",status="old")!data file
+open(2,file="montepi.plt",status="old")!plot file
 do i=1,n
 call random_number(x)
 call random_number(y)
@@ -17,9 +18,15 @@ r=(x**2+y**2)**0.5
 if(r<=1)then
 c=c+1 !incrementing each time the random point falls within the circle
 pi=4.0*real(c)/(i)
-print *,i,pi
-write(1,*)i,x,y,r,pi
+print *,i,x,y,r,pi
+write(1,*)x,y
+write(2,*)'set xlabel "X"'
+write(2,*)'set ylabel "Y"'
+write(2,*)'plot "pi12.dat" with line'
 end if
 end do
+CALL SYSTEM('gnuplot -p montepi.plt') !calling gnuplot using the call system command
+
 close(1)
+close(2)
 end program
