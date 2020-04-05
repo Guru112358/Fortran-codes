@@ -1,12 +1,13 @@
 program lotka_volterra
+implicit none
     !This program solves the lotka Volterra equations of a single predator species and single prey species using Heun's method.
     !DISCLAIMERS: 1)The model used here is highly simplistic,the populations and time are non dimensional.
     !             2)The values of the coefficients are just an example and not represntative of any real world system.
     !             3)Running ths program for longer time duration causes numerical error to build up as the method is only second order accurate.
     !             4)The Runge-Kutta-Fehlberg method provides better results for more complicated population models.
     !             5)my reference: i)https://web.ma.utexas.edu/users/davis/375/popecol/lec10/lotka.html
-    !                            ii)https://en.wikipedia.org/wiki/Lotka–Volterra_equations#cite_note-27
-    real::x,y,alpha,beta,gammar,delta,xbar,ybar,x__,y__
+    !                            ii)https://en.wikipedia.org/wiki/Lotkaâ€“Volterra_equations#cite_note-27
+    real::x,y,alpha,beta,gammar,delta,xbar,ybar,x__,y__,dt
     integer::i,nsteps,time
     alpha=0.5
     beta=0.8
