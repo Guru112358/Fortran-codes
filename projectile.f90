@@ -22,7 +22,7 @@ program Projectile
     do i=1,nsteps
         vxhalf=vx0+(dvx(vx0,vy0))*(dt/2)
         vyhalf=vy0+(dvy(vx0,vy0))*(dt/2)
-        vx=vx0+(dvy(vxhalf,vyhalf))*(dt)
+        vx=vx0+(dvx(vxhalf,vyhalf))*(dt)
         vy=vy0+(dvy(vxhalf,vyhalf))*(dt)
         x=x0+(vx*dt/2)
         y=y0+(vy*dt/2)
