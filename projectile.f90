@@ -3,7 +3,7 @@ program Projectile
     !RK4 scheme gives a more accurate trajecory but this is just a simple exercise for a bored mind hell bent on world domination during the lockdown of 2020.
     implicit none
     double precision,parameter::pi=4*ATAN(1.0)
-    double precision::v0,vx0,vy0,vx,vy,dvx,dvy,theta,k,l,Tp,x,y,x0,y0,dt,vxhalf,vyhalf,m,c,g
+    double precision::v0,vx0,vy0,vx,vy,dvx,dvy,theta,Tp,x,y,x0,y0,dt,vxhalf,vyhalf,m,c,g
     integer::i,nsteps
     c=0.004488
     g=9.81
