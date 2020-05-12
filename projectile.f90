@@ -3,13 +3,10 @@ program Projectile
     !RK4 scheme gives a more accurate trajecory but this is just a simple exercise for a bored mind hell bent on world domination during the lockdown of 2020.
     implicit none
     double precision,parameter::pi=4*ATAN(1.0)
-    double precision::v0,vx0,vy0,vx,vy,dvx,dvy,theta,Tp,x,y,x0,y0,dt,vxhalf,vyhalf,m,c,g
+    double precision::v0,vx0,vy0,vx,vy,theta,Tp,x,y,x0,y0,dt,vxhalf,vyhalf
     integer::i,nsteps
-    c=0.004488
-    g=9.81
-    m=106
-    v0=1640
-    theta=50*(pi/180)
+    v0=100
+    theta=45*(pi/180)
     vx0=v0*COS(theta)
     vy0=v0*SIN(theta)
     x0=0.0
@@ -41,29 +38,31 @@ program Projectile
     write(2,*)'set xlabel "X"'
     write(2,*)'set ylabel "Y"'
     write(2,*)'set title "projectile trajectory"'
-    write(2,*)'set size ratio 1.5'
+    write(2,*)'set size ratio 2'
     write(2,*)'plot "xyproj.dat" with line'
     CALL SYSTEM('gnuplot -p xyproj.plt')
 close(1)
 close(2)
-end program Projectile
-
+contains
 
 !functions for variation of x and y velocity components wrt time.
 
 double precision function dvx(vx,vy)
-double precision::vx,vy,m,c,g
-c=0.004488
+double precision::vx,vy,c,m,g
+c=0.05
 g=9.81
-m=106
+m=150
 dvx=(-c/m)*(SQRT((vx**2)+(vy**2))*vx)
 end function
 
 
 double precision function dvy(vx,vy)
-double precision::vx,vy,m,c,g
-c=0.004488
+double precision::vx,vy,c,m,g
+c=0.05
 g=9.81
-m=106
+m=150
 dvy=(-g)-((c/m))*(SQRT((vx**2)+(vy**2))*vx)
 end function
+
+
+end program projectile
