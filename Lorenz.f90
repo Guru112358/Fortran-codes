@@ -3,10 +3,10 @@ program Lorenz
     !the numerical method employed is a simple midpoint method.
     !visualisation using gnuplot.
     implicit none
-    real::x,y,z,xbar,ybar,zbar,x__,y__,z__,dt,Tp,sigma,rho,beta
+    double precision::x,y,z,xbar,ybar,zbar,x__,y__,z__,dt,Tp,sigma,rho,beta
     integer::i,nsteps
     Tp=100
-    dt=0.01
+    dt=0.001
     nsteps=INT(Tp/dt)
     x=1
     y=2
@@ -16,6 +16,9 @@ program Lorenz
     beta=8/3
     open(1,file='lorenz.dat',status='replace')
     open(2,file='phaseplotlorenz.plt',status='replace')
+    open(3,file='xzl.dat',status='replace')
+    open(4,file='phaseplotlorenzxz.plt',status='replace')
+
     do i=1,nsteps
         xbar=x+(0.5*dt)*(sigma*(y-x))
         ybar=y+(0.5*dt)*(x*(rho-z)-y)
@@ -30,6 +33,7 @@ program Lorenz
         z=z__
 
         write(1,*)x,y,z
+        write(3,*)x,z
     end do
 
         write(2,*)'set xlabel "x"'
@@ -39,8 +43,15 @@ program Lorenz
         write(2,*)'splot "lorenz.dat" with line'
         CALL SYSTEM('gnuplot -p phaseplotlorenz.plt')
 
+        write(4,*)'set xlabel "x"'
+        write(4,*)'set ylabel "z"'
+        write(4,*)'set title "xyplot"'
+        write(4,*)'plot "xzl.dat" with line'
+        CALL SYSTEM('gnuplot -p phaseplotlorenzxz.plt')
+
 
 close(1)
 close(2)
-
+close(3)
+close(4)
 end program
