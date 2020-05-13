@@ -9,8 +9,8 @@ real::x,y,r,pi
 integer::n,i,c
 c=0 !counter
 n=10000!number of random points
-open(1,file="pi12.dat",status="old")!data file
-open(2,file="montepi.plt",status="old")!plot file
+open(1,file="pi12.dat",status="replace")!data file
+open(2,file="montepi.plt",status="replace")!plot file
 do i=1,n
 call random_number(x)
 call random_number(y)
