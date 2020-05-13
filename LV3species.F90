@@ -58,7 +58,7 @@
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         write(8,*)'set xlabel "time"'
         write(8,*)'set ylabel "population"'
-        write(8,*)'set title "Species population population vs time"'
+        write(8,*)'set title "Species population vs time"'
         write(8,*)'plot "zpopulation3.dat" with line,"xpopulation3.dat" with line ,"ypopulation3.dat" with line'
         CALL SYSTEM('gnuplot -p xyzplot3.plt')
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
