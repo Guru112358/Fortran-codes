@@ -27,7 +27,7 @@
             y=0.8
             z=0.9
             dt=0.1
-            time=50
+            time=150
             nsteps=int(time/dt)
             open(1,file="xpopulation3.dat",status='replace')
             open(2,file="ypopulation3.dat",status='replace')
@@ -38,7 +38,7 @@
             open(10,file='xyz3.dat',status='replace')
 
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            do i=-1,nsteps
+            do i=1,nsteps
         !using midpoint method/Heun's method to calculate the populations at half time step
            xbar=x+(0.5*dt)*((alpha*x)-(beta*x*y))
            ybar=y+(0.5*dt)*((delta*x*y)-(gammar*y)-(e*y*z))
@@ -58,8 +58,8 @@
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         write(8,*)'set xlabel "time"'
         write(8,*)'set ylabel "population"'
-        write(8,*)'set title "Specied population population vs time"'
-        write(8,*)'plot "zpopulation3.dat" with line,"xpopulation3.dat" with line ,"ypopulation3.dat"with line'
+        write(8,*)'set title "Species population population vs time"'
+        write(8,*)'plot "zpopulation3.dat" with line,"xpopulation3.dat" with line ,"ypopulation3.dat" with line'
         CALL SYSTEM('gnuplot -p xyzplot3.plt')
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         write(9,*)'set xlabel "prey population"'
