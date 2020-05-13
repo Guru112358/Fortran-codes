@@ -15,30 +15,28 @@
             !
             real::x,y,alpha,beta,gammar,delta,xbar,ybar,x__,y__,dt,z,z__,e,f,g,zbar
             integer::i,nsteps,time
-            alpha=1
-            beta=1
-            gammar=1
-            delta=1
-            e=1
-            f=1
-            g=1.6
+            alpha=0.8
+            beta=0.9
+            gammar=0.9
+            delta=0.65
+            e=0.35
+            f=0.6
+            g=0.45
             !intial conditions with equal populations of apex predator(Z), middle predator(y) and prey(x)
-            x=0.5
-            y=0.6
-            z=0.1
+            x=0.1
+            y=0.8
+            z=0.9
             dt=0.1
-            time=100
+            time=50
             nsteps=int(time/dt)
-            open(1,file="xpopulation.dat",status='replace')
-            open(2,file="ypopulation.dat",status='replace')
-            open(7,file="zpopulation.dat",status='replace')
-            open(3,file="xplot.plt",status='replace')
-            open(4,file="yplot.plt",status='replace')
-            open(5,file="xvsy.dat",status='replace')
-            open(6,file="xyphaseplot.plt",status='replace')
-            open(8,file='zplot.plt',status='replace')
-            open(10,file='xyz.dat',status='replace')
-            open(9,file='xyzphaseplot.plt',status='replace')
+            open(1,file="xpopulation3.dat",status='replace')
+            open(2,file="ypopulation3.dat",status='replace')
+            open(6,file="xyphaseplot3.plt",status='replace')
+            open(7,file="zpopulation3.dat",status='replace')
+            open(8,file='xyzplot3.plt',status='replace')
+            open(9,file='xyzphaseplot3.plt',status='replace')
+            open(10,file='xyz3.dat',status='replace')
+
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             do i=-1,nsteps
         !using midpoint method/Heun's method to calculate the populations at half time step
@@ -55,49 +53,27 @@
            write(1,*)(i*dt),x
            write(2,*)(i*dt),y
            write(7,*)(i*dt),z
-           write(5,*)x,y
            write(10,*)x,y,z
             end do
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        write(3,*)'set xlabel "time"'
-        write(3,*)'set ylabel "population of prey"'
-        write(3,*)'set title "prey population vs time"'
-        write(3,*)'plot "xpopulation.dat" with line'
-        CALL SYSTEM('gnuplot -p xplot.plt')
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        write(4,*)'set xlabel "time"'
-        write(4,*)'set ylabel "population of middle predator"'
-        write(4,*)'set title "middle predator population vs time" '
-        write(4,*)'plot "ypopulation.dat" with line'
-        CALL SYSTEM('gnuplot -p yplot.plt')
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        write(6,*)'set xlabel "prey population"'
-        write(6,*)'set ylabel "middle predator population"'
-        write(6,*)'set title "phase plot"'
-        write(6,*)'plot "xvsy.dat" with line'
-        CALL SYSTEM('gnuplot -p xyphaseplot.plt')
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         write(8,*)'set xlabel "time"'
-        write(8,*)'set ylabel "apex predator population"'
-        write(8,*)'set title "apex predator population vs time"'
-        write(8,*)'plot "zpopulation.dat" with line'
-        CALL SYSTEM('gnuplot -p zplot.plt')
+        write(8,*)'set ylabel "population"'
+        write(8,*)'set title "Specied population population vs time"'
+        write(8,*)'plot "zpopulation3.dat" with line,"xpopulation3.dat" with line ,"ypopulation3.dat"with line'
+        CALL SYSTEM('gnuplot -p xyzplot3.plt')
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         write(9,*)'set xlabel "prey population"'
         write(9,*)'set ylabel "middle predator population"'
         write(9,*)'set zlabel "apex predator population"'
         write(9,*)'set title "3D phase plot"'
-        write(9,*)'splot "xyz.dat" with line'
-        CALL SYSTEM('gnuplot -p xyzphaseplot.plt')
+        write(9,*)'splot "xyz3.dat" with line'
+        CALL SYSTEM('gnuplot -p xyzphaseplot3.plt')
         close(1)
         close(2)
-        close(3)
-        close(4)
-        close(5)
         close(6)
         close(7)
         close(8)
         close(9)
         close(10)
-        end program
+    end program
 
