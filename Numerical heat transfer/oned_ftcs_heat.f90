@@ -11,7 +11,7 @@ alpha=0.001 !thermal diffusivity of the  material
 n=100       !number of grid points
 dt=0.01     !time step
 dx=1.0/n    !grid spacing
-Tp=200
+Tp=200      !time period
 allocate(T(n),Te(n),x(n))
 nsteps=INT(Tp/dt)
 C=(alpha*dt)/(dx**2)
