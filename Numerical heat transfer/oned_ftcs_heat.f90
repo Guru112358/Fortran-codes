@@ -36,14 +36,19 @@ do time=1,nsteps !time loop
 do i=1,n-1       !space loop
 
 Te(i)=T(i)+C*((T(i+1)-2*T(i)+T(i-1)))  !discretised time stepping
+
+if(Te(i)<0.0)Then
+    exit
+end if
+
 if(MOD(time,100)==0)then
 write(1,*)x(i),T(i)
 write(3,*)time*dt,T(i)
 write(5,*)time*dt,x(i),T(i)
 end if
+
 end do
 T=Te
-
 end do
 
 !post processing data files
