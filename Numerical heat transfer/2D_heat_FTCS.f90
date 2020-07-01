@@ -1,82 +1,71 @@
-program oneDheatequation
-    !this program solves the 1 D heat equation with a givwen initial heat distribution with a simple explicit Finite difference method
-    !the scheme used is a FTCS scheme
-    !warning::(alpha*dt)/(dx**2) should be lesser than or equal to one for a stable solution
-integer::i,n,Tp,nsteps,time
-real,allocatable,dimension(:)::T,x,Te
-real::dx,alpha,dt,C
-real,parameter::pi=4*ATAN(1.0)
+program heat2D
+    !this program solves the 2D heat equation with a given initial heat distribution with a simple explicit Finite difference method.
+    !the scheme used is a FTCS scheme.
+    !warning::(alpha*dt)/(dx**2)+*(beta*dt)/(dy**2) should be lesser than or equal to half(0.5) for a stable solution.
+    !the domain is a square plate of dimensions 1 x 1
+    implicit none
+    integer::i,Tp,nsteps,time,j,nx,ny
+    real,dimension(50,80)::T,Te,x,y
+    real::dx,D,alpha,dy,beta,dt
+    D=0.0000001
+    dt=0.1
+    nx=50 !grid points in x direction
+    ny=80 !grid points in y direction
+    dx=1.0/nx
+    dy=1.0/ny
+    Tp=500
+    nsteps=INT(Tp/dt)
+    alpha=(D*dt)/(dx**2)
+    beta=(D*dt)/(dy**2)
+    open(1, file = 'initial.dat', status = 'replace')
+    open(2,file='tempdata.plt',status='replace')
+    open(3,file = 'final.dat', status = 'replace')
+    open(4,file = 'initial1.plt', status = 'replace')
+  !Defining initial heat distribution with a function.
 
-alpha=0.001 !thermal diffusivity of the  material
-n=100       !number of grid points
-dt=0.01     !time step
-dx=1.0/n    !grid spacing
-Tp=1000      !time period
-allocate(T(n),Te(n),x(n))
-nsteps=INT(Tp/dt)
-C=(alpha*dt)/(dx**2)
+    do i=0,nx
+        do j=0,ny
+            x(i,j)=i*dx
+            y(i,j)=j*dy
+            T(i,j)=500*SIN(x(i,j)+y(i,j))
+            write(1,*)x(i,j),y(i,j),T(i,j)
+        end do
+    end do
 
-open(1,file="temperature.dat",status='replace')
-open(2,file="tempdata.plt",status='replace')
-open(3,file="temptime.dat",status='replace')
-open(4,file="temptime.plt",status='replace')
-open(5,file='temptime3d.dat',status='replace')
-open(6,file='temptime3d.plt',status='replace')
+    do time=1,nsteps !time loop
+            do i=1,nx-1 !x traversal loop
+            do j=1,ny-1 !y traversal loop
+                Te(i,j)=alpha*(T(i+1,j)-T(i-1,j))+beta*(T(i,j+1)-T(i,j-1))+(1-2*alpha-2*beta)*T(i,j)!2D FTCS time stepping
+                if(time==nsteps)then
+                write(3,*)x(i,j),y(i,j),Te(i,j)
+                else if(Te(i,j)<0.0)Then
+                    exit
+                end if
+	        end do
+            end do
+	        T=Te
+        end do
+!Post processing the data files
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            write(4,*)'set xlabel "x"'
+            write(4,*)'set ylabel "y"'
+            write(4,*)'set zlabel "T"'
+            write(4,*)'set grid'
+            write(4,*)'set title "Initial temperature distribution"'
+            write(4,*)'plot "initial.dat" u 1:2:3 with image'
+            CALL SYSTEM('gnuplot -p initial1.plt')
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            write(2,*)'set xlabel "x"'
+            write(2,*)'set ylabel "y"'
+            write(2,*)'set zlabel "T"'
+            write(2,*)'set grid'
+            write(2,*)'set title "final temperature distribution"'
+            write(2,*)'plot "final.dat" u 1:2:3 with image'
+            CALL SYSTEM('gnuplot -p tempdata.plt')
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    close(1)
+    close(2)
+    close(3)
+    close(4)
 
-!defining heat dsitribution at time t-0,for simplicity,a sinusoidal distribution is used.However other distributions can be specified.
-
-do i=0,n
-x(i)=i*dx
-T(i)=500*SIN(pi*x(i))
-end do
-
-
-do time=1,nsteps !time loop
-
-do i=1,n-1       !space loop
-
-Te(i)=T(i)+C*((T(i+1)-2*T(i)+T(i-1)))  !discretised time stepping
-
-if(Te(i)<0.0)Then
-    exit
-end if
-
-if(MOD(time,100)==0)then
-write(1,*)x(i),T(i)
-write(3,*)time*dt,T(i)
-write(5,*)time*dt,x(i),T(i)
-end if
-
-end do
-T=Te
-end do
-
-!post processing data files
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-write(2,*)'set xlabel "X"'
-write(2,*)'set ylabel "Temperature"'
-write(2,*)'plot "temperature.dat" '
-CALL SYSTEM('gnuplot -p tempdata.plt')
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-write(4,*)'set xlabel "time"'
-write(4,*)'set ylabel "Temperature"'
-write(4,*)'set title "3D heat evolution"'
-write(4,*)'plot "temptime.dat" '
-CALL SYSTEM('gnuplot -p temptime.plt')
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-write(6,*)'set xlabel "time"'
-write(6,*)'set ylabel "x"'
-write(6,*)'set zlabel "Temperature"'
-write(6,*)'set title "temperature time plot"'
-write(6,*)'splot "temptime3d.dat" '
-CALL SYSTEM('gnuplot -p temptime3d.plt')
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-close(1)
-close(2)
-close(3)
-close(4)
-close(5)
-close(6)
-deallocate(x,T,Te)
-end program oneDheatequation
+end program heat2D
