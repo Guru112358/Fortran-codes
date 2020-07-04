@@ -4,16 +4,16 @@ program heat2D
     !warning::(alpha*dt)/(dx**2)+*(beta*dt)/(dy**2) should be lesser than or equal to half(0.5) for a stable solution.
     !the domain is a square plate of dimensions 1 x 1
     implicit none
-    integer::i,Tp,nsteps,time,j,nx,ny
-    real,dimension(50,80)::T,Te,x,y
-    real::dx,D,alpha,dy,beta,dt
-    D=0.0000001
-    dt=0.1
-    nx=50 !grid points in x direction
-    ny=80 !grid points in y direction
-    dx=1.0/nx
-    dy=1.0/ny
-    Tp=500
+    integer,parameter::nx=50
+    integer,parameter::ny=50
+    integer::i,Tp,nsteps,time,j
+    double precision,dimension(nx,ny)::T,Te,x,y,r
+    double precision::dx,D,alpha,dy,beta,dt
+    D=0.00000001
+    dt=0.01
+    dx=real(1.0/nx)
+    dy=real(1.0/ny)
+    Tp=1000
     nsteps=INT(Tp/dt)
     alpha=(D*dt)/(dx**2)
     beta=(D*dt)/(dy**2)
@@ -27,7 +27,8 @@ program heat2D
         do j=0,ny
             x(i,j)=i*dx
             y(i,j)=j*dy
-            T(i,j)=500*SIN(x(i,j)+y(i,j))
+            r=(x(i,j)-0.5)**2+(y(i,j)-0.5)**2
+            T(i,j)=500*EXP(-r(i,j)**3)
             write(1,*)x(i,j),y(i,j),T(i,j)
         end do
     end do
@@ -36,15 +37,16 @@ program heat2D
             do i=1,nx-1 !x traversal loop
             do j=1,ny-1 !y traversal loop
                 Te(i,j)=alpha*(T(i+1,j)-T(i-1,j))+beta*(T(i,j+1)-T(i,j-1))+(1-2*alpha-2*beta)*T(i,j)!2D FTCS time stepping
-                if(time==nsteps)then
-                write(3,*)x(i,j),y(i,j),Te(i,j)
-                else if(Te(i,j)<0.0)Then
-                    exit
+                if(Te(i,j)<=0.0)then
+                exit
+                else if(time==nsteps)Then
+                     write(3,*)x(i,j),y(i,j),Te(i,j)
                 end if
 	        end do
             end do
 	        T=Te
         end do
+
 !Post processing the data files
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             write(4,*)'set xlabel "x"'
