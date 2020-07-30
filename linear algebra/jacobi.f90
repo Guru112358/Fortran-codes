@@ -95,7 +95,7 @@ residual=MAXVAL(ABS(xnp1-xn))
 !defining the residual
 if(residual<tol)exit
 xn=xnp1
-if(t=nsteps)then
+if(t==nsteps)then
     write(*,*)"max number of iterations exceeded"
 end if
 
