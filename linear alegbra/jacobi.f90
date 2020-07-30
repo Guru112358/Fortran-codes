@@ -1,6 +1,6 @@
 program Jacobi
     !This program computes the solution to a system of equations using the Iterative Jacobi method which works when the system of equations is strongly diagonally dominant
-    implicit none
+    implicit none.
     integer,parameter::n=3
     real,dimension(n,n)::A,L,U,D,Dinv
     real,dimension(n)::b,xn,xnp1
@@ -65,7 +65,7 @@ end do
 write(*,*)"    "
 end do
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-write(*,*)"The upper triangular matrix L ="
+write(*,*)"The upper triangular matrix U ="
 do i=1,n
     do j=1,n
 write(*,'(f8.3,t3)',advance='no')U(i,j)
@@ -106,9 +106,6 @@ write(*,*)"The solution matrix is  X="
 do j=1,n
 write(*,*)xn(j)
 end do
-
-
-
 
 
 end program
