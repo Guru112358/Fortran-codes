@@ -1,4 +1,4 @@
-program Laplace
+program Poisson
 !-----------------------------------------------------------------------------------------------------------
 !!!!!!!!!!!!!This program solves the Poisson's equation(uxx+uyy=rho(x,y)) by simultaneous relaxation in 2D
 !These problems are typically encountered in electrostatics in order to find the potential of a given charge distribution (rho) in space.
