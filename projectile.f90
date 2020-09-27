@@ -61,7 +61,7 @@ double precision::vx,vy,c,m,g
 c=0.05
 g=9.81
 m=150
-dvy=(-g)-((c/m))*(SQRT((vx**2)+(vy**2))*vx)
+dvy=(-g)-((c/m))*(SQRT((vx**2)+(vy**2))*vy)
 end function
 
 
