@@ -10,7 +10,7 @@
             !               g represents the efficiency and propagation rate of the predator z in the presence of prey
 
             !             6)my reference: i)https://web.ma.utexas.edu/users/davis/375/popecol/lec10/lotka.html
-            !                            ii)https://en.wikipedia.org/wiki/Lotka–Volterra_equations#cite_note-27
+            !                            ii)https://en.wikipedia.org/wiki/LotkaVolterra_equations#cite_note-27
             !                            iii)A Lotka-Volterra Three-Species Food Chain Author(s): Erica Chauvet, Joseph E. Paullet, Joseph P. Previte and Zac WallsSource: Mathematics Magazine, Vol. 75, No. 4 (Oct., 2002), pp. 243-255Published
             !
             real::x,y,alpha,beta,gammar,delta,xbar,ybar,x__,y__,dt,z,z__,e,f,g,zbar
@@ -27,7 +27,7 @@
             y=0.8
             z=0.9
             dt=0.1
-            time=150
+            time=100
             nsteps=int(time/dt)
             open(1,file="xpopulation3.dat",status='replace')
             open(2,file="ypopulation3.dat",status='replace')
@@ -42,11 +42,11 @@
         !using midpoint method/Heun's method to calculate the populations at half time step
            xbar=x+(0.5*dt)*((alpha*x)-(beta*x*y))
            ybar=y+(0.5*dt)*((delta*x*y)-(gammar*y)-(e*y*z))
-           zbar=z+(0.5*dt)*((-f*z)+(g*y))
+           zbar=z+(0.5*dt)*((-f*z)+(g*y*z))
         !computing the final values of x,y and z by time stepping the midpoint values to the original values
            x__=x+(dt)*((alpha*xbar)-(beta*xbar*ybar))
            y__=y+(dt)*((delta*xbar*ybar)-(gammar*ybar)-(e*ybar*zbar))
-           z__=z+(dt)*(-f*zbar)+(g*ybar)
+           z__=z+(dt)*(-f*zbar)+(g*ybar*z)
            x=x__
            y=y__
            z=z__
@@ -76,4 +76,3 @@
         close(9)
         close(10)
     end program
-
