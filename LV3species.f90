@@ -46,7 +46,7 @@
         !computing the final values of x,y and z by time stepping the midpoint values to the original values
            x__=x+(dt)*((alpha*xbar)-(beta*xbar*ybar))
            y__=y+(dt)*((delta*xbar*ybar)-(gammar*ybar)-(e*ybar*zbar))
-           z__=z+(dt)*(-f*zbar)+(g*ybar*z)
+           z__=z+(dt)*(-f*zbar)+(g*ybar*zbar)
            x=x__
            y=y__
            z=z__
