@@ -16,18 +16,18 @@
             real::x,y,alpha,beta,gammar,delta,xbar,ybar,x__,y__,dt,z,z__,e,f,g,zbar
             integer::i,nsteps,time
             alpha=0.8
-            beta=0.9
-            gammar=0.9
-            delta=0.65
-            e=0.35
-            f=0.6
-            g=0.45
+            beta=0.65
+            gammar=0.45
+            delta=0.60
+            e=0.7
+            f=0.5
+            g=0.6
             !intial conditions with equal populations of apex predator(Z), middle predator(y) and prey(x)
-            x=0.1
+            x=1.5
             y=0.8
-            z=0.9
-            dt=0.1
-            time=100
+            z=1.0
+            dt=0.001
+            time=30
             nsteps=int(time/dt)
             open(1,file="xpopulation3.dat",status='replace')
             open(2,file="ypopulation3.dat",status='replace')
@@ -46,7 +46,7 @@
         !computing the final values of x,y and z by time stepping the midpoint values to the original values
            x__=x+(dt)*((alpha*xbar)-(beta*xbar*ybar))
            y__=y+(dt)*((delta*xbar*ybar)-(gammar*ybar)-(e*ybar*zbar))
-           z__=z+(dt)*(-f*zbar)+(g*ybar*zbar)
+           z__=z+(dt)*((-f*zbar)+(g*ybar*zbar))
            x=x__
            y=y__
            z=z__
@@ -59,7 +59,8 @@
         write(8,*)'set xlabel "time"'
         write(8,*)'set ylabel "population"'
         write(8,*)'set title "Species population vs time"'
-        write(8,*)'plot "zpopulation3.dat" with line,"xpopulation3.dat" with line ,"ypopulation3.dat" with line'
+        write(8,*)'plot "xpopulation3.dat" with line,"zpopulation3.dat" with line,\'
+        write(8,*)'"ypopulation3.dat" with line'
         CALL SYSTEM('gnuplot -p xyzplot3.plt')
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         write(9,*)'set xlabel "prey population"'
@@ -76,3 +77,4 @@
         close(9)
         close(10)
     end program
+
