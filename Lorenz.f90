@@ -101,12 +101,4 @@ zdot=(x*y)-(b*z)
 return
 end function
 
-
-function Jacobian(x,y,z)result(J)
-real::x,y,z
-real,dimension(3,3)::J
-J= reshape((/-s,r-z,y,s,-1.00,x,0.00,-x,-b /), (/3,3/))
-return
-end function
-
 end program
