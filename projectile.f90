@@ -66,7 +66,6 @@ do while(switch1.GT.0)
     write(2,*)'set xlabel "Range(m)"'
     write(2,*)'set ylabel "Height(m)"'
     write(2,*)'set grid'
-    write(2,*)'set autoscale xy'
     write(2,*)'plot "xyproj.dat" with line lt rgb "red" title "Trajectory"'
     CALL SYSTEM('gnuplot -p xyproj.plt')
 close(1)
