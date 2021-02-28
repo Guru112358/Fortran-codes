@@ -20,7 +20,7 @@ program Projectile
     write(*,*)"Enter the angle of elevation in degrees:-"
     read *,theta
     write(*,*)
-    write(*,*)"Enter The Proejection velocity(m/s):-"
+    write(*,*)"Enter The Projection velocity(m/s):-"
     read *,v0
     write(*,*)
     write(*,*)"Enter the time step for integration:- "
