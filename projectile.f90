@@ -1,3 +1,4 @@
+
 program Projectile
     !this program solves for the trajecttory of a projectile with quadratic air resistance using a second order modified Euler Scheme.
     implicit none
@@ -6,7 +7,7 @@ program Projectile
     double precision::m  !mass of the projectile
     double precision::c   !drag coefficient
     double precision,parameter::g=9.81 !acceleration due to gravity
-    integer::i,switch1
+    integer::i,switch1,t
 
     write(*,*)"Enter the mass of the projectile(kg):- "
     read *,m
@@ -29,7 +30,7 @@ program Projectile
 
     vx0=v0*COS(theta*(pi/180))  !x velocity
     vy0=v0*SIN(theta*(pi/180))  ! y velocity
-
+    t=0
     switch1=1
 
     open(1,file='xyproj.dat',status='replace')
@@ -39,7 +40,7 @@ write(*,*)"please wait,computing trajectory......"
 write(*,*)
 
 do while(switch1.GT.0)
-        
+        t=t+1  
         vxhalf=vx0+(dvx(vx0,vy0,m,c,g))*(dt/2)
         vyhalf=vy0+(dvy(vx0,vy0,m,c,g))*(dt/2)
         vx=vx0+(dvx(vxhalf,vyhalf,m,c,g))*(dt)
@@ -53,10 +54,11 @@ do while(switch1.GT.0)
         if(y<=0)then  !condition to halt the program after the projectile touches the ground(y=0)
         switch1=-1
          write(*,*)"Integration complete!,plotting results"
+         write(*,*)"Time of flight:",t*dt,"seconds"
         else
         !write(*,*)x,y
         write(1,*)x,y
-       
+      
        end if   
  end do
 
@@ -64,6 +66,7 @@ do while(switch1.GT.0)
     write(2,*)'set xlabel "Range(m)"'
     write(2,*)'set ylabel "Height(m)"'
     write(2,*)'set grid'
+    write(2,*)'set autoscale xy'
     write(2,*)'plot "xyproj.dat" with line lt rgb "red" title "Trajectory"'
     CALL SYSTEM('gnuplot -p xyproj.plt')
 close(1)
@@ -94,5 +97,7 @@ end function
 
 
 end program projectile
+
+
 
 
