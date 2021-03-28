@@ -19,12 +19,12 @@
         dt=0.01
         time=100
         nsteps=int(time/dt)
-        open(1,file="xpopulation.dat",status='old')
-        open(2,file="ypopulation.dat",status='old')
-        open(3,file="xplot.plt",status='old')
-        open(4,file="yplot.plt",status='old')
-        open(5,file="xvsy.dat",status='old')
-        open(6,file="xyphaseplot.plt",status='old')
+        open(1,file="xpopulation.dat",status='new')
+        open(2,file="ypopulation.dat",status='new')
+        open(3,file="xplot.plt",status='new')
+        open(4,file="yplot.plt",status='new')
+        open(5,file="xvsy.dat",status='new')
+        open(6,file="xyphaseplot.plt",status='new')
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         do i=-1,nsteps
     !using midpoint method/Heun's method to calculate the populations at half time step
