@@ -8,18 +8,19 @@ implicit none
 real,parameter::s=10.0 !sigma
 real,parameter::b=8/3  !beta
 real,parameter::r=28   !rho
+
 real::x0,y0,z0,xnp1,ynp1,znp1,Tp,dt,xbar,ybar,zbar
 real,allocatable,dimension(:)::x,y,z,time
 integer::i,nsteps
 
 
-Tp=30
+Tp=100
 dt=0.0001
 x0=0.1
 y0=0.0
 z0=0.0
-nsteps=int(Tp/dt)
 
+nsteps=int(Tp/dt)
 
 open(1,file='xyz.dat',status='replace')
 open(2,file='plot1.plt',status='replace')
@@ -56,13 +57,14 @@ write(2,*)"set xlabel 'x'"
 write(2,*)"set ylabel 'y'"
 write(2,*)"set zlabel 'z'"
 write(2,*)"splot 'xyz.dat'  with line "
-write(3,*)"set xlabel 'time'"
+write(2,*)"set xlabel 'time'"
 write(3,*)"set grid"
 write(3,*)"plot 'xyz.dat' using 4:1 with line lt rgb 'red' title 'X'"
 write(3,*)"set xlabel 'time'"
 write(4,*)"set grid"
 write(4,*)"set xlabel 'time'"
 write(4,*)"plot 'xyz.dat' using 4:2 with line lt rgb 'blue' title 'y'"
+write(4,*)"set xlabel 'time'"
 write(5,*)"set grid"
 write(5,*)"set xlabel 'time'"
 write(5,*)"plot 'xyz.dat' using 4:3 with line lt rgb 'dark-violet' title 'Z'"
@@ -100,5 +102,7 @@ real::x,y,z,zdot
 zdot=(x*y)-(b*z)
 return
 end function
+
+
 
 end program
