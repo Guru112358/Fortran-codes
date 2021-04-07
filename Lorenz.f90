@@ -1,26 +1,24 @@
 program Lorenz
 implicit none
-
 ! This is a simple program to solve the Lorenz series of 3 ODE's by taking the constants rho,sigma and beta such that chaotic behaviour is observed from the literature.
 !the numerical method employed is a simple midpoint method.
 !visualisation using gnuplot.
 
 real,parameter::s=10.0 !sigma
-real,parameter::b=8/3  !beta
-real,parameter::r=28   !rho
-
+real,parameter::b=2.666666667  !beta
+real,parameter::r=28.0   !rho
 real::x0,y0,z0,xnp1,ynp1,znp1,Tp,dt,xbar,ybar,zbar
 real,allocatable,dimension(:)::x,y,z,time
 integer::i,nsteps
 
 
-Tp=100
+Tp=50
 dt=0.0001
 x0=0.1
-y0=0.0
-z0=0.0
-
+y0=0.1
+z0=0.1
 nsteps=int(Tp/dt)
+
 
 open(1,file='xyz.dat',status='replace')
 open(2,file='plot1.plt',status='replace')
@@ -33,13 +31,13 @@ allocate(x(nsteps),y(nsteps),z(nsteps),time(nsteps))
 
 do i=1,nsteps
 
-xbar=x0+0.5*dt*dxdt(x0,y0)
-ybar=y0+0.5*dt*dydt(x0,y0,z0)
-zbar=z0+0.5*dt*dzdt(x0,y0,z0)
+xbar=x0+dt*dxdt(x0,y0)
+ybar=y0+dt*dydt(x0,y0,z0)
+zbar=z0+dt*dzdt(x0,y0,z0)
 
-xnp1=x0+dt*dxdt(xbar,ybar)
-ynp1=y0+dt*dydt(xbar,ybar,zbar)
-znp1=z0+dt*dzdt(xbar,ybar,zbar)
+xnp1=x0+0.5*dt*(dxdt(xbar,ybar)+dxdt(x0,y0))
+ynp1=y0+0.5*dt*(dydt(xbar,ybar,zbar)+dydt(x0,y0,z0))
+znp1=z0+0.5*dt*(dzdt(xbar,ybar,zbar)+dzdt(x0,y0,z0))
 
 
 x0=xnp1
@@ -51,20 +49,24 @@ y(i)=ynp1
 z(i)=znp1
 time(i)=i*dt
 write(1,*)x(i),y(i),z(i),time(i)
+!write(*,*)x(i),y(i),z(i),time(i)
+
+!write(*,*)Jacobian(xnp1,ynp1,znp1)
+
 end do
 
 write(2,*)"set xlabel 'x'"
 write(2,*)"set ylabel 'y'"
 write(2,*)"set zlabel 'z'"
-write(2,*)"splot 'xyz.dat'  with line "
-write(2,*)"set xlabel 'time'"
+write(2,*)"splot 'xyz.dat'  with line lt rgb 'red' title 'Phase Plot' "
+write(3,*)"set xlabel 'time'"
 write(3,*)"set grid"
+write(3,*)"set mouse"
 write(3,*)"plot 'xyz.dat' using 4:1 with line lt rgb 'red' title 'X'"
 write(3,*)"set xlabel 'time'"
 write(4,*)"set grid"
 write(4,*)"set xlabel 'time'"
 write(4,*)"plot 'xyz.dat' using 4:2 with line lt rgb 'blue' title 'y'"
-write(4,*)"set xlabel 'time'"
 write(5,*)"set grid"
 write(5,*)"set xlabel 'time'"
 write(5,*)"plot 'xyz.dat' using 4:3 with line lt rgb 'dark-violet' title 'Z'"
@@ -103,6 +105,12 @@ zdot=(x*y)-(b*z)
 return
 end function
 
-
+!Jacobian function not used yet ,just there for possible future usage
+function Jacobian(x,y,z)result(J)
+real::x,y,z
+real,dimension(3,3)::J
+J= reshape((/-s,r-z,y,s,-1.00,x,0.00,-x,-b /), (/3,3/))
+return
+end function
 
 end program
