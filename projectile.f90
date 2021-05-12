@@ -1,5 +1,5 @@
 program Projectile
-    !this program solves for the trajecttory of a projectile with quadratic air resistance  Euler Scheme.
+    !this program solves for the trajecttory of a projectile with quadratic air resistance using an Euler Scheme.
     implicit none
     double precision,parameter::pi=4*ATAN(1.0)
     double precision::v0,vx0,vy0,vx,vy,theta,x,y,x0,y0,dt,vxbar,vybar,vxnp1,vynp1,xnp1,ynp1
