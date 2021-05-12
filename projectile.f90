@@ -2,7 +2,7 @@ program Projectile
     !this program solves for the trajecttory of a projectile with quadratic air resistance  Euler Scheme.
     implicit none
     double precision,parameter::pi=4*ATAN(1.0)
-    double precision::v0,vx0,vy0,vx,vy,theta,x,y,x0,y0,dt,vxbar,vybar,vxnp1,vynp1,xnp1,ynp1,xbar,ybar
+    double precision::v0,vx0,vy0,vx,vy,theta,x,y,x0,y0,dt,vxbar,vybar,vxnp1,vynp1,xnp1,ynp1
     double precision::m  !mass of the projectile
     double precision::c   !drag coefficient
     double precision,parameter::g=9.81 !acceleration due to gravity
