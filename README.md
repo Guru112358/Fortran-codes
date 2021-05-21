@@ -8,3 +8,4 @@ some simple Fortran programs I have created while learning the language
 5)simple predator prey model with three species.
 6)Solving The Lorenz equations numerically.
 7)solving for the trajectory of a projectile with quadratic air resistance.
+8)Simple root finding program using the Secant method
