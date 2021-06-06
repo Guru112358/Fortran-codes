@@ -1,4 +1,4 @@
-    program lotka_volterra
+program lotka_volterra
             implicit none
             !This program solves the lotka Volterra equations of a apex predator,middle predator and one prey species and single prey species using Heun's method.
             !DISCLAIMERS: 1)The model used here is highly simplistic,the populations and time are non dimensional.
@@ -15,19 +15,19 @@
             !
             real::x,y,alpha,beta,gammar,delta,xbar,ybar,x__,y__,dt,z,z__,e,f,g,zbar
             integer::i,nsteps,time
-            alpha=0.8
-            beta=0.65
-            gammar=0.45
-            delta=0.60
-            e=0.7
-            f=0.5
-            g=0.6
+            alpha=1.0
+            beta=1.0
+            gammar=1.0
+            delta=1.0
+            e=1.0
+            f=1.0
+            g=0.8
             !intial conditions with equal populations of apex predator(Z), middle predator(y) and prey(x)
-            x=1.5
-            y=0.8
-            z=1.0
+            x=0.5
+            y=1.0
+            z=2.0
             dt=0.001
-            time=30
+            time=25
             nsteps=int(time/dt)
             open(1,file="xpopulation3.dat",status='replace')
             open(2,file="ypopulation3.dat",status='replace')
@@ -58,16 +58,18 @@
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         write(8,*)'set xlabel "time"'
         write(8,*)'set ylabel "population"'
+        write(8,*)'set grid'
         write(8,*)'set title "Species population vs time"'
-        write(8,*)'plot "xpopulation3.dat" with line,"zpopulation3.dat" with line,\'
-        write(8,*)'"ypopulation3.dat" with line'
+        write(8,*)'plot "xpopulation3.dat" with line lt rgb "red" title "Species X(Apex Predator)",\'
+        write(8,*)'"zpopulation3.dat" with line lt rgb "blue" title "Species Y(Middle Predator)",\'
+        write(8,*)'"ypopulation3.dat" with line lt rgb "green" title "Species Z(Prey)"'
         CALL SYSTEM('gnuplot -p xyzplot3.plt')
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         write(9,*)'set xlabel "prey population"'
         write(9,*)'set ylabel "middle predator population"'
         write(9,*)'set zlabel "apex predator population"'
         write(9,*)'set title "3D phase plot"'
-        write(9,*)'splot "xyz3.dat" with line'
+        write(9,*)'splot "xyz3.dat" with line lt rgb "red" title "Phase trajectory"'
         CALL SYSTEM('gnuplot -p xyzphaseplot3.plt')
         close(1)
         close(2)
@@ -76,5 +78,6 @@
         close(8)
         close(9)
         close(10)
+        
     end program
 
