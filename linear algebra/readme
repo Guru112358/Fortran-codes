@@ -2,3 +2,4 @@ This folder contains code to some simple linear algebra methods of solving syste
 
 1)Jacobi Iterative method
 2)Thomas Algorithm for Tridiagonal system of equations
+3)Maximum Eigenvalue program using power iterations/Von Mises iterations
