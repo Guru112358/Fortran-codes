@@ -1,22 +1,23 @@
 program Lorenz
 implicit none
 ! This is a simple program to solve the Lorenz series of 3 ODE's by taking the constants rho,sigma and beta such that chaotic behaviour is observed from the literature.
-!the numerical method employed is a simple midpoint method.
+!simple 4 th order Runge kutta method is utiliased to solve the system of ODEs
 !visualisation using gnuplot.
 
-real,parameter::s=10.0 !sigma
-real,parameter::b=2.666666667  !beta
-real,parameter::r=28.0   !rho
-real::x0,y0,z0,xnp1,ynp1,znp1,Tp,dt,xbar,ybar,zbar
-real,allocatable,dimension(:)::x,y,z,time
+real(8),parameter::s=10.0 !sigma
+real(8),parameter::b=2.666666667  !beta
+real(8),parameter::r=28  !rho
+real(8)::x0,y0,z0,xnp1,ynp1,znp1,Tp,dt,xbar,ybar,zbar
+real(8)::k1,k2,k3,k4,l1,l2,l3,l4,m1,m2,m3,m4
+real(8),allocatable,dimension(:)::x,y,z,time
 integer::i,nsteps
 
 
 Tp=50
 dt=0.0001
-x0=0.1
-y0=0.1
-z0=0.1
+x0=0.0
+y0=1.0
+z0=0.0
 nsteps=int(Tp/dt)
 
 
@@ -31,27 +32,42 @@ allocate(x(nsteps),y(nsteps),z(nsteps),time(nsteps))
 
 do i=1,nsteps
 
-xbar=x0+dt*dxdt(x0,y0)
-ybar=y0+dt*dydt(x0,y0,z0)
-zbar=z0+dt*dzdt(x0,y0,z0)
 
-xnp1=x0+0.5*dt*(dxdt(xbar,ybar)+dxdt(x0,y0))
-ynp1=y0+0.5*dt*(dydt(xbar,ybar,zbar)+dydt(x0,y0,z0))
-znp1=z0+0.5*dt*(dzdt(xbar,ybar,zbar)+dzdt(x0,y0,z0))
+k1=dxdt(x0,y0)
+l1=dydt(x0,y0,z0)
+m1=dzdt(x0,y0,z0)
 
+k2=dxdt(x0+0.5*k1*dt,y0+0.5*l1*dt)
+l2=dydt(x0+0.5*k1*dt,y0+0.5*l1*dt,z0+0.5*m1*dt)
+m2=dzdt(x0+0.5*k1*dt,y0+0.5*l1*dt,z0+0.5*m1*dt)
+
+k3=dxdt(x0+0.5*k2*dt,y0+0.5*l2*dt)
+l3=dydt(x0+0.5*k2*dt,y0+0.5*l2*dt,z0+0.5*m2*dt)
+m3=dzdt(x0+0.5*k2*dt,y0+0.5*l2*dt,z0+0.5*m2*dt)
+
+k4=dxdt(x0+k3*dt,y0+l3*dt)
+l4=dydt(x0+k3*dt,y0+l3*dt,z0+m3*dt)
+m4=dzdt(x0+k3*dt,y0+k3*dt,z0+m3*dt)
+
+xnp1=x0+(dt/6)*(k1+(2*k2)+(2*k3)+k4)
+ynp1=y0+(dt/6)*(l1+(2*l2)+(2*l3)+l4)
+znp1=z0+(dt/6)*(m1+(2*m2)+(2*m3)+m4)
 
 x0=xnp1
 y0=ynp1
 z0=znp1
 
+
 x(i)=xnp1
 y(i)=ynp1
 z(i)=znp1
+
 time(i)=i*dt
+
 write(1,*)x(i),y(i),z(i),time(i)
 !write(*,*)x(i),y(i),z(i),time(i)
-
 !write(*,*)Jacobian(xnp1,ynp1,znp1)
+
 
 end do
 
@@ -87,30 +103,31 @@ deallocate(x,y,z,time)
 contains
 
 function dxdt(x,y)result(xdot)
-real::x,y,xdot
+real(8)::x,y,xdot
 xdot=s*(y-x)
 return
 end function
 
 function dydt(x,y,z)result(ydot)
-real::x,y,z,ydot
+real(8)::x,y,z,ydot
 ydot=x*(r-z)-y
 return
 end function
 
 
 function dzdt(x,y,z)result(zdot)
-real::x,y,z,zdot
+real(8)::x,y,z,zdot
 zdot=(x*y)-(b*z)
 return
 end function
 
-!Jacobian function not used yet ,just there for possible future usage
+
 function Jacobian(x,y,z)result(J)
-real::x,y,z
-real,dimension(3,3)::J
-J= reshape((/-s,r-z,y,s,-1.00,x,0.00,-x,-b /), (/3,3/))
+real(8)::x,y,z
+real(8),dimension(3,3)::J
+J= reshape((/-s,r-z,y,s,-1.00d0,x,0.00d0,-x,-b /), (/3,3/))
 return
 end function
 
 end program
+
