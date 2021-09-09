@@ -4,19 +4,25 @@ program heat2D
     !warning::(alpha*dt)/(dx**2)+*(beta*dt)/(dy**2) should be lesser than or equal to half(0.5) for a stable solution.
     !the domain is a square plate of dimensions 1 x 1
     implicit none
-    integer,parameter::nx=50
-    integer,parameter::ny=50
+    
+    integer,parameter::nx=70
+    integer,parameter::ny=70
     integer::i,Tp,nsteps,time,j
-    double precision,dimension(nx,ny)::T,Te,x,y,r
-    double precision::dx,D,alpha,dy,beta,dt
-    D=0.00000001
-    dt=0.01
+    real(8),dimension(0:nx,0:ny)::T,Te,x,y,r
+    real(8)::dx,D,alpha,dy,beta,dt
+    
+    D=0.0000019
+    dt=0.001
+    
     dx=real(1.0/nx)
     dy=real(1.0/ny)
-    Tp=1000
+    
+    Tp=10
+    
     nsteps=INT(Tp/dt)
     alpha=(D*dt)/(dx**2)
     beta=(D*dt)/(dy**2)
+    
     open(1, file = 'initial.dat', status = 'replace')
     open(2,file='tempdata.plt',status='replace')
     open(3,file = 'final.dat', status = 'replace')
@@ -27,8 +33,9 @@ program heat2D
         do j=0,ny
             x(i,j)=i*dx
             y(i,j)=j*dy
-            r=(x(i,j)-0.5)**2+(y(i,j)-0.5)**2
-            T(i,j)=500*EXP(-r(i,j)**3)
+            T(i,j)=500*x(i,j)*y(i,j)+200
+        
+            
             write(1,*)x(i,j),y(i,j),T(i,j)
         end do
     end do
@@ -52,6 +59,7 @@ program heat2D
             write(4,*)'set xlabel "x"'
             write(4,*)'set ylabel "y"'
             write(4,*)'set zlabel "T"'
+            write(4,*)'set size ratio 1.0'
             write(4,*)'set grid'
             write(4,*)'set title "Initial temperature distribution"'
             write(4,*)'plot "initial.dat" u 1:2:3 with image'
@@ -60,6 +68,7 @@ program heat2D
             write(2,*)'set xlabel "x"'
             write(2,*)'set ylabel "y"'
             write(2,*)'set zlabel "T"'
+            write(2,*)'set size ratio 1.0'
             write(2,*)'set grid'
             write(2,*)'set title "final temperature distribution"'
             write(2,*)'plot "final.dat" u 1:2:3 with image'
