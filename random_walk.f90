@@ -56,12 +56,13 @@ do i =1,nsteps
     u2=1-k2
     !step=1
     step = SQRT(-2*LOG(u1))*COS(2*pi*u2)
+  
     theta=2*pi*(1-k)
-    phi=2*pi*(1-p)
+    phi=ACOS(1-2*(1-p))
 
-        x0=x0+step*COS(phi)*SIN(theta)
+        x0=x0+step*SIN(phi)*COS(theta)
         y0=y0+step*SIN(theta)*SIN(phi)
-        z0=z0+step*COS(theta)
+        z0=z0+step*COS(phi)
         
         x(i)=x0
         y(i)=y0
