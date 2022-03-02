@@ -35,27 +35,41 @@ program Projectile
     open(1,file='xyproj.dat',status='replace')
     open(2,file='xyproj.plt',status='replace')
 
+
 write(*,*)"please wait,computing trajectory......"
 write(*,*)
 
 do while(switch1.EQ.0)
         t=t+1  
-        vxnp1=vx0+dvx(vx0,vy0,m,c,g)*(dt)
-        vynp1=vy0+dvy(vx0,vy0,m,c,g)*(dt)
         xnp1=x0+(vx0*dt)+(0.5*dt**2)*(dvx(vx0,vy0,m,c,g))
         ynp1=y0+(vy0*dt)+(0.5*dt**2)*(dvy(vx0,vy0,m,c,g))
+
+        vxbar=vx0+0.5*dt*dvx(vx0,vy0,m,c,g)
+        vybar=vy0+0.5*dt*dvy(vx0,vy0,m,c,g)
+
+        vxnp1=vx0+0.5*dt*(dvx(vx0,vy0,m,c,g)+dvx(vxbar,vybar,m,c,g))
+        vynp1=vy0+0.5*dt*(dvy(vx0,vy0,m,c,g)+dvy(vxbar,vybar,m,c,g))
+
         x0=xnp1
         y0=ynp1
+        
+        vxbar=vx0
+        vybar=vy0
+
         vx0=vxnp1
         vy0=vynp1
+        
 
         if(ynp1<=0)then  !condition to halt the program after the projectile touches the ground(y=0)
         switch1=1
          write(*,*)"Integration complete!,plotting results"
          write(*,*)"Time of flight:",t*dt,"seconds"
         else
+        
+       
         write(*,*)xnp1,ynp1
         write(1,*)xnp1,ynp1
+    
       
        end if   
  end do
@@ -94,7 +108,6 @@ end function
 
 
 end program projectile
-
 
 
 
